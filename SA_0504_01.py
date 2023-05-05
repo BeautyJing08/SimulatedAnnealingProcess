@@ -42,4 +42,3 @@ print("Best solution: x =", best_state)
 print("Best objective function value:", f(best_state))
 
 print("")
-print()

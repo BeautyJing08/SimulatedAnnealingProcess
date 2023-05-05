@@ -40,3 +40,5 @@ best_state = simulated_annealing(initial_state, temp, temp_min, alpha)
 # 輸出最佳解及其目標函數值
 print("Best solution: x =", best_state)
 print("Best objective function value:", f(best_state))
+
+print("")

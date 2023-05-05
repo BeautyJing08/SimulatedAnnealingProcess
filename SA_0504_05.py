@@ -124,3 +124,6 @@ gBestList = SimulatedAnnealing(testPoint, gBestPoint, temperature, FireReduction
 
 for i in gBestList:
     print(f"gBestlx= {i.lx}\t gBestly= {i.ly}\t gBestFitness= {i.fitness}")
+
+
+print("use mac to save git once 0505/2348")

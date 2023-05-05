@@ -131,5 +131,5 @@ FireReductionRadio = 0.9
 
 SimulatedAnnealing(testPoint, temperature, FireReductionRadio)
 
-# a = math.exp(-112/500)
-# print(a)
+a = math.exp(-112/500)
+print(a)

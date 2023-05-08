@@ -16,16 +16,23 @@ DMatrix = np.array([[0, 1, 2, 3, 4, 5],
 
 # 計算 a-b-c-d-e-a 的總距離
 path = ['A', 'B', 'C', 'D', 'E', 'A']
+pathList= []
+pathList.append(path)
 
 
-total_distance = 0
-for i in range(len(path) - 1):
-    this_city = path[i]
-    next_city = path[i + 1]
-    index_this = cities.index(this_city)
-    index_next = cities.index(next_city)
-    distance = DMatrix[index_this][index_next]
-    total_distance += distance
+
+
+
+def calculateDistance(path):
+    total_distance = 0
+    for i in range(len(path) - 1):
+        this_city = path[i]
+        next_city = path[i + 1]
+        index_this = cities.index(this_city)
+        index_next = cities.index(next_city)
+        distance = DMatrix[index_this][index_next]
+        total_distance += distance
+    return  total_distance
 
 # 顯示結果
-print(f"a-b-c-d-e-a 的總距離為 {total_distance}")
+print(f"{path} 的總距離為 {total_distance}")

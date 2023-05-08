@@ -36,3 +36,4 @@ distance01 = calculateDistance(function01)
 print(distance01)
 
 print("~~~~~~~~")
+print("把mac的上傳user.name改成BeautyJingMac")

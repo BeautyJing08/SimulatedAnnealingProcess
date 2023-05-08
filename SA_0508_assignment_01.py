@@ -34,3 +34,5 @@ def calculateDistance(solutionarray):
 
 distance01 = calculateDistance(function01)
 print(distance01)
+
+print("~~~~~~~~")

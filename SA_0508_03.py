@@ -192,7 +192,7 @@ print(f"gBestChangeIndexListFitness ={gBestChangeIndexListFitness}")
 
 ############### 開始做圖 ######################
 
-iteration_ = np.arange(0, iterationNum - 1, 1)
+iteration_ = np.arange(0, len(gBest_history), 1)
 plt.xlabel("Generation")
 plt.ylabel("Fitness,f Maximum")
 plt.plot(iteration_, gBest_history)

@@ -149,3 +149,8 @@ SimulatedAnnealing(testArray, gBestArray, temperature)
 #     if count % 3 ==0:
 #         a = add(a)
 #         print(a)
+
+assignment= [[12,22,58],
+             [39,62,65],
+             [20,53,15]]
+

@@ -35,7 +35,6 @@ class SolutionArray():
         self.array = array
         self.fitness = fitnessFunction(WorkMatrix, array)  # 把這個array丟到找fitness的method計算出來
 
-
 ## 創建溫度class
 class Temperature():
     def __init__(self, initialtemp, tempMin):
@@ -56,33 +55,45 @@ def getNewSolution():
     return solutionArray
 
 def getNeighborSolution(solutionArray): #生成旁邊的解
-    pos1 = random.randint(0, len(solutionArray) - 1)
-    pos2 = random.randint(0, len(solutionArray) - 1)
-    solutionArray[pos1], solutionArray[pos2] = solutionArray[pos2], solutionArray[pos1]
+    pos1 = random.randint(0, len(solutionArray.array) - 1)
+    pos2 = random.randint(0, len(solutionArray.array) - 1)
+    solutionArray.array[pos1], solutionArray.array[pos2] = solutionArray.array[pos2], solutionArray.array[pos1]
+    solutionArray.fitness = fitnessFunction(WorkMatrix, solutionArray.array)
     return solutionArray
 
-def SimulatedAnnealing(testArray, gBestArray, temperature):
-    gBestList = []
-    gBestChangeIndexList = []
-    print(f"第一輪進到退火演算法，溫度為 temperature.temp= {temperature.temp}")
-    iterationNum = 1
-    gBestList = []
-    gBestChangeIndexList = []
+def SimulatedAnnealing(WorkMatrix, temperature):
+    iterationNum = 0
+    gBestList = [] #有更好的gBest時，就存進來
+    gBestChangeIndexList = [] #這是
+
+    #### 初代解 ####
+    print(f"：")
+    testArray = SolutionArray(getNewSolution())
+    print(f"第{iterationNum}代，array= {testArray.array}, fitness= {testArray.fitness} ")
+
+    gBestArray = testArray  # 同時創造一個新的gBestArray來記錄
+    print(f"第{iterationNum}代，gBestarray= {gBestArray.array}, fitness= {gBestArray.fitness} ")
+
     while temperature.temp > temperature.tempMin:
-        tmpTestArray = SolutionArray(getNewSolution())
+        iterationNum += 1
+        tmpTestArray = getNeighborSolution(testArray)
         ### 第一個情況，新的解比舊的解好 ###
         if tmpTestArray.fitness > testArray.fitness:
+            #?#?##??#?#?##?#?#?#?###?#?#?#?#?#?#why這句寫不出來
+            print(f"tmpTestArray.fitness={tmpTestArray.fitness} > testArray.fitness={testArray.fitness}")
+            print("~~~~~~~~")
             testArray = tmpTestArray
+
             if iterationNum % 3 == 0:
                 temperature = SlowCooling(temperature, iterationNum)  # 每三個iteration就降溫一次
-            print(f"array= {testArray.array}, fitness= {testArray.fitness} ")
-            print(f"temperature= {temperature.temp:.2f}")
-            iterationNum += 1
+            print(f"第{iterationNum}代，array= {testArray.array}, fitness= {testArray.fitness}, temperature= {temperature.temp:.2f} ")
+
             ###############有加這句的話，就是沒有更好的也插進來##################
             gBestList.append(gBestArray)
             if tmpTestArray.fitness > gBestArray.fitness:
                 gBestArray = tmpTestArray
                 gBestChangeIndexList.append(iterationNum) #紀錄哪一個iteration有變得更好
+                print(f"第{iterationNum}代，gBestArray= {gBestArray.array}, gBestfitness= {gBestArray.fitness}")
                 # gBestList.append(gBestPoint)
 
         ### 第二個情況，新的解沒有比舊的解好 # 就要計算 delta & movePossibility & 隨機生成 r
@@ -91,18 +102,19 @@ def SimulatedAnnealing(testArray, gBestArray, temperature):
             r = np.random.rand()  # 隨機創造0~1之間的數
             delta = tmpTestArray.fitness - testArray.fitness
             movePossibility = math.exp(delta / temperature.temp)
-            print(f"delta={delta},temperature.temp={temperature.temp}")
+            # print(f"delta={delta},temperature.temp={temperature.temp}")
 
-            print(f"tmpP.F={tmpTestArray.fitness},testP.F={testArray.fitness}")
+
             print(f"因為新的粒子fitness < 初始粒子fitness")
-            print(f"r= {r},movePossibility= {movePossibility} ,  delta= {delta}")
+            print(f"tmpP.F={tmpTestArray.fitness},testP.F={testArray.fitness}")
+            print(f"r= {r:.2f},movePossibility= {movePossibility:.2f} ,  delta= {delta}")
 
             if r < movePossibility:  # 若隨機變數r < 移動機率movePossibility
                 testArray = tmpTestArray  # 就move粒子，讓新的取代舊的
                 if iterationNum % 3 == 0:
                     temperature = SlowCooling(temperature, iterationNum)  # 每三個iteration就降溫一次
-                print(f"array= {testArray.array}, fitness= {testArray.fitness} ")
-                print(f"temperature= {temperature.temp:.2f}")
+                print(f"第{iterationNum}代，array= {testArray.array}, fitness= {testArray.fitness}, temperature= {temperature.temp:.2f} ")
+
                 ###############有加這句的話，就是沒有更好的也插進來##################
                 gBestList.append(gBestArray)
                 if tmpTestArray.fitness > gBestArray.fitness:
@@ -114,33 +126,43 @@ def SimulatedAnnealing(testArray, gBestArray, temperature):
 
             if iterationNum % 3 == 0:
                 temperature = SlowCooling(temperature, iterationNum)  # 每三個iteration就降溫一次
-            print(f"array= {testArray.array}, fitness= {testArray.fitness} ")
-            print(f"temperature= {temperature.temp:.2f}")
+            print(f"第{iterationNum}代，array= {testArray.array}, fitness= {testArray.fitness}, temperature= {temperature.temp:.2f} ")
+
             ###############有加這句的話，就是沒有更好的也插進來##################
-            gBestList.append(gBestPoint)
-    iterationNum += 1
+            gBestList.append(gBestArray)
+
+    # iterationNum += 1
     print()
+    return  gBestList
 
 ####### STEP 02 找到初代解  #############
 
 
-# 創造初始解
+# # 創造初始解
+#
+# print(f"初代解：")
+# testArray = SolutionArray(getNewSolution())
+# print(f"array= {testArray.array}, fitness= {testArray.fitness} ")
+#
+# gBestArray = testArray  # 同時創造一個新的gBestArray來記錄
+# print(f"array= {gBestArray.array}, fitness= {gBestArray.fitness} ")
 
-print(f"初代解：")
-testArray = SolutionArray(getNewSolution())
-print(f"array= {testArray.array}, fitness= {testArray.fitness} ")
 
-gBestArray = testArray  # 同時創造一個新的gBestArray來記錄
-print(f"array= {gBestArray.array}, fitness= {gBestArray.fitness} ")
+
 
 # 創建溫度
 
 initialtemp = 300
-tempMin = 100
+tempMin = 0.5
 temperature = Temperature(initialtemp, tempMin)
 print(f"temp={temperature.temp},tempMin={temperature.tempMin}")
 print()
 
-SimulatedAnnealing(testArray, gBestArray, temperature)
+gBestList =  SimulatedAnnealing(WorkMatrix, temperature)
 
-2313
+# # 建立一個gBest_history，把gBest的歷史紀錄全部記錄下來((即使沒有變得更好也記錄下來))
+# gBest_fitness_history = []
+#
+# for i in gBestList:
+#     print(f"gBestarray={i.array}\t gBestarray_fitness= {i.fitness}")
+#     gBest_fitness_history.append(i.fitness)

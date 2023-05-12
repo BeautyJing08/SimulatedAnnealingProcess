@@ -149,10 +149,10 @@ def SimulatedAnnealing(WorkMatrix, temperature): #要把 workMatrix & 溫度丟�
 
 print("M11105102")
 print("Jing's SA_assignment")
-initialtemp = 300
-tempMin = 0.01
+initialtemp = 3000
+tempMin = 10
 temperature = Temperature(initialtemp, tempMin) ### 創建溫度
-print(f"初始溫度temp={temperature.temp}\t低溫限制tempMin={temperature.tempMin}") ### 印出 溫度設定
+print(f"初始溫度temp={temperature.initialtemp}\t低溫限制tempMin={temperature.tempMin}") ### 印出 溫度設定
 print()
 
 ####### STEP 03 執行退火演算法 SimulatedAnnealing  #####################
@@ -183,13 +183,13 @@ gBestListFitness = []
 for i in gBestList:
     gBestListFitness.append(i.fitness)
 # print(gBestListFitness)
-
+print(f"初始溫度temp={temperature.initialtemp}\t低溫限制tempMin={temperature.tempMin}") ### 印出 溫度設定
 print(f"總共執行了 {iterationNum} 代")
 print(f"final_出現在第 {gBestChangeIndexList[-1]} 代, final_gBest = {gBestList[-1].array}, final_gBest_fitness= {gBestListFitness[-1]}")
 
 ################## STEP 04 繪圖 #############################
-###版本一：每一個fitness跑的趨勢####
 
+plt.title("Jing_SA")
 iteration_ = np.arange(0, len(testArrayListFitness), 1)
 plt.xlabel("Generation")
 plt.ylabel("Fitness,f Maximum")
@@ -203,10 +203,8 @@ for i in range(len(gBestChangeIndexList)):
     y = gBestChange_index_fitness[i]
     plt.text(x, y + 3, f"({x}, {y})", fontsize=7, ha='center', va='bottom', alpha=0.5)
 
-plt.title("Jing_SA")
 plt.scatter(gBestChangeIndexList, gBestChange_index_fitness, alpha=0.3, c="r" , label = "gBestChangePoint") #這是把gBestChange的點標示出來
 plt.legend(loc='lower right')  # 顯示圖例 #放在圖的右下角
-
 
 text = f'initialtemp={temperature.initialtemp}, tempMin={temperature.tempMin}'
 plt.text(0.98, 0.2, text, fontsize=8, ha='right', va='bottom', transform=plt.gca().transAxes)

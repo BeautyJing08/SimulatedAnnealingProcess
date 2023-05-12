@@ -76,7 +76,8 @@ def SimulatedAnnealing(WorkMatrix, temperature):
 
     #### 初代解 ####
     testArray = getNewSolution()
-    print(f"第{iterationNum}代，array= {testArray.array}, fitness= {testArray.fitness}, temperature= {temperature.temp:.2f} ")
+    print(
+        f"第{iterationNum}代，array= {testArray.array}, fitness= {testArray.fitness}, temperature= {temperature.temp:.2f} ")
 
     gBestArray = testArray  # 同時創造一個新的gBestArray來記錄
     # print(f"第{iterationNum}代，gBestarray= {gBestArray.array}, fitness= {gBestArray.fitness} ")
@@ -92,7 +93,8 @@ def SimulatedAnnealing(WorkMatrix, temperature):
 
             if iterationNum % 3 == 0:
                 temperature = SlowCooling(temperature, iterationNum)  # 每三個iteration就降溫一次
-            print(f"第{iterationNum}代，array= {testArray.array}, fitness= {testArray.fitness}, temperature= {temperature.temp:.2f} ")
+            print(
+                f"第{iterationNum}代，array= {testArray.array}, fitness= {testArray.fitness}, temperature= {temperature.temp:.2f} ")
             gBestList.append(gBestArray)
             ###############有加這句的話，就是沒有更好的也插進來##################
 
@@ -118,7 +120,8 @@ def SimulatedAnnealing(WorkMatrix, temperature):
                 testArray = tmpTestArray  # 就move粒子，讓新的取代舊的
                 if iterationNum % 3 == 0:
                     temperature = SlowCooling(temperature, iterationNum)  # 每三個iteration就降溫一次
-                print( f"第{iterationNum}代，array= {testArray.array}, fitness= {testArray.fitness}, temperature= {temperature.temp:.2f} ")
+                print(
+                    f"第{iterationNum}代，array= {testArray.array}, fitness= {testArray.fitness}, temperature= {temperature.temp:.2f} ")
 
                 ###############有加這句的話，就是沒有更好的也插進來##################
                 # gBestList.append(gBestArray)
@@ -130,7 +133,8 @@ def SimulatedAnnealing(WorkMatrix, temperature):
 
             if iterationNum % 3 == 0:
                 temperature = SlowCooling(temperature, iterationNum)  # 每三個iteration就降溫一次
-            print(f"第{iterationNum}代，array= {testArray.array}, fitness= {testArray.fitness}, temperature= {temperature.temp:.2f} ")
+            print(
+                f"第{iterationNum}代，array= {testArray.array}, fitness= {testArray.fitness}, temperature= {temperature.temp:.2f} ")
 
             ###############有加這句的話，就是沒有更好的也插進來##################
             # gBestList.append(gBestArray)
@@ -140,7 +144,7 @@ def SimulatedAnnealing(WorkMatrix, temperature):
 
     # iterationNum += 1
     print()
-    return testArrayList ,gBestList , iterationNum
+    return testArrayList, gBestList, gBestChangeIndexList, iterationNum
 
 
 ######## STEP 02 設定溫度  ####################################
@@ -150,34 +154,48 @@ def SimulatedAnnealing(WorkMatrix, temperature):
 print("M11105102")
 print("Jing's SA_assignment")
 initialtemp = 300
-tempMin = 2
+tempMin = 0.5
 temperature = Temperature(initialtemp, tempMin)
 print(f"temp={temperature.temp}\ttempMin={temperature.tempMin}")
 print()
 
 ####### STEP 03 執行退火演算法 SimulatedAnnealing  #############
 
-testArrayList ,gBestList , iterationNum = SimulatedAnnealing(WorkMatrix, temperature)
+testArrayList, gBestList, gBestChangeIndexList, iterationNum = SimulatedAnnealing(WorkMatrix, temperature)
 
+# for i in gBestList:
+#     print(i.fitness)
 
-for i in gBestList:
-    print(i.fitness)
-
-# print(testArrayList)
+## 創建 testArrayListFitness #把每一代的fitness裝進去
 testArrayListFitness = []
 for i in testArrayList:
     testArrayListFitness.append(i.fitness)
 print(testArrayListFitness)
-print(testArrayListFitness.count())
-print(iterationNum)
+print(len(testArrayListFitness))
+print(iterationNum + 1)
 
-################### STEP 04 繪圖 #############################
-####版本一：每一個fitness跑的趨勢####
-#
-# iteration_ = np.arange(0, len(gBest_history), 1)
-# plt.xlabel("Generation")
-# plt.ylabel("Fitness,f Maximum")
-# plt.plot(iteration_, gBest_history)
-# plt.title("Jing_SA")
-# plt.scatter(gBestChangeIndexList, gBestChangeIndexListFitness, alpha=0.3, c="r")
-# plt.show()
+## 把 gBestChangeIndexList 丟到 testArrayListFitness找到轉折點
+## 這是要拿來畫得到更好的gBest圖點圖
+
+gBestChange_index_fitness = []
+print(gBestChangeIndexList)
+for i in gBestChangeIndexList:
+    gBestChange_index_fitness.append(testArrayListFitness[i])
+
+print(gBestChange_index_fitness)
+
+
+
+
+
+
+################## STEP 04 繪圖 #############################
+###版本一：每一個fitness跑的趨勢####
+
+iteration_ = np.arange(0, len(testArrayListFitness), 1)
+plt.xlabel("Generation")
+plt.ylabel("Fitness,f Maximum")
+plt.plot(iteration_, testArrayListFitness)  #
+plt.title("Jing_SA")
+plt.scatter(gBestChangeIndexList, gBestChange_index_fitness, alpha=0.3, c="r")
+plt.show()

@@ -1,3 +1,4 @@
+###### M11105102 王菁 SA and TS assignment ##########
 import math
 import random
 import numpy as np

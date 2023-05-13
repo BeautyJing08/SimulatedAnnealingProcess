@@ -2,7 +2,9 @@ import math
 import random
 import numpy as np
 import matplotlib.pyplot as plt
+import time
 
+start = time.process_time()
 ########## STEP 00 __ 設定workMatrix ######################
 
 WorkMatrix = np.array([[67, 34, 32, 83, 38, 86, 85, 44, 25, 77],
@@ -150,7 +152,7 @@ def SimulatedAnnealing(WorkMatrix, temperature): #要把 workMatrix & 溫度丟�
 print("M11105102")
 print("Jing's SA_assignment")
 initialtemp = 3000
-tempMin = 10
+tempMin = 0
 temperature = Temperature(initialtemp, tempMin) ### 創建溫度
 print(f"初始溫度temp={temperature.initialtemp}\t低溫限制tempMin={temperature.tempMin}") ### 印出 溫度設定
 print()
@@ -187,6 +189,9 @@ print(f"初始溫度temp={temperature.initialtemp}\t低溫限制tempMin={tempera
 print(f"總共執行了 {iterationNum} 代")
 print(f"final_出現在第 {gBestChangeIndexList[-1]} 代, final_gBest = {gBestList[-1].array}, final_gBest_fitness= {gBestListFitness[-1]}")
 
+end = time.process_time()
+
+print(f"找到所有解的執行時間: ", (end - start))
 ################## STEP 04 繪圖 #############################
 
 plt.title("Jing_SA")

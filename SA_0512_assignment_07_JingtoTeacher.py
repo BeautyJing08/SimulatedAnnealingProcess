@@ -186,7 +186,7 @@ gBestListFitness = []
 for i in gBestList:
     gBestListFitness.append(i.fitness)
 # print(gBestListFitness)
-print(f"初始溫度temp={temperature.initialtemp}\t低溫限制tempMin={temperature.tempMin}") ### 印出 溫度設定
+print(f"初始溫度temp={temperature.initialtemp}\t低溫限制tempMin={temperature.tempMin}") ### 印出 溫度設定Z
 print(f"總共執行了 {iterationNum} 代")
 print(f"final_出現在第 {gBestChangeIndexList[-1]} 代, final_gBest = {gBestList[-1].array}, final_gBest_fitness= {gBestListFitness[-1]}")
 
